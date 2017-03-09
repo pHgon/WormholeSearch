@@ -2,6 +2,16 @@
 // Autores - Paulo Henrik Goncalves & Gilberto Kreisler
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node{
+	int cost; 
+	struct Node *pred; // Predecessor    
+}; typedef struct Node Wormhole;
+
+void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes);
+void BellmanFord ();
 
 void main (int argc,char *argv[]){
 	if(argc == 1){
@@ -9,5 +19,36 @@ void main (int argc,char *argv[]){
 		exit(-1);
 	}
 
-	FILE *inputFile  = fopen (argv[2], "r");
+	FILE *inputFile  = fopen (argv[1], "r");
+	if (inputFile == NULL){
+		printf("ERROR: Failed to open File .. Program closed!\n");
+		exit(-1);
+	}
+
+	int i, sets;
+	fscanf(inputFile, "%d\n", &sets);  // Le o numero de conjuntos que serao avaliados
+
+	for(i=0; i<sets; i++){  // Para todos os conjuntos
+		int galaxies, wormholes; 
+		fscanf(inputFile, "%d %d\n", &galaxies, &wormholes);  // Le o numero de galaxias e o numero de buracos de minhoca
+		wormholeSearch(inputFile, galaxies, wormholes);
+	}
 }
+
+void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes){
+	Wormhole matrix[numGalaxies][numWormholes];
+	int i, j;
+	int aux1, aux2, aux3;  // Auxiliares para leitura do arquivo
+
+	for(i=0; i<numGalaxies; i++){         //
+		for(j=0; j<numWormholes; j++){    //  NAO SEI AO CERTO SE ESTE TRECHO E NECESSARIO
+			matrix[i][j].cost = 0;             //  A MATRIZ JA INICIA ZERADA?
+		}                                 //  
+	}                                     //
+
+	for(i=0; i<numWormholes; i++){
+		fscanf(inputFile, "%d %d %d\n", &aux1, &aux2, &aux3);
+		matrix[aux1][aux2].cost = aux3;
+	}
+}
+
