@@ -7,7 +7,7 @@
 #include <limits.h>
 
 struct Node{
-	int cost;
+	int distance;
 	struct Node *pred; // Predecessor
 }; typedef struct Node Wormhole;
 
@@ -37,44 +37,74 @@ void main (int argc,char *argv[]){
 }
 
 void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes){
-	Wormhole matrix[numGalaxies][numWormholes];
+	int matrix[numGalaxies][numWormholes]; //Matriz de adjacência
+	int vertices[numGalaxies]; //Lista de vertices do grafo
 	int i, j, src = INT_MAX;
 	int aux1, aux2, aux3;  // Auxiliares para leitura do arquivo
 
 	for(i=0; i<numGalaxies; i++){         //
 		for(j=0; j<numWormholes; j++){    //  NAO SEI AO CERTO SE ESTE TRECHO E NECESSARIO
-			matrix[i][j].cost = 0;        //  A MATRIZ JA INICIA ZERADA?
+			matrix[i][j] = 0;        //  A MATRIZ JA INICIA ZERADA?
 		}                                 //
 	}                                     //
 
+	//Starta a matriz de adjacência com os devidos custos
 	for(i=0; i<numWormholes; i++){
 		fscanf(inputFile, "%d %d %d\n", &aux1, &aux2, &aux3);
-		matrix[aux1][aux2].cost = aux3;
+		matrix[aux1][aux2] = aux3;
 		if(aux1<src)
 			src=aux1;
 	}
 
 	// BELLMAN FORD ALGORITHM //////////////////////////////////////////////////////////////////////
 
-	int dist[numGalaxies];  // Vetor de Distancias
-	for(i=0; i<numGalaxies; i++){
-		dist[i] = INT_MAX; // Seta todos os vertices com infinito
+	//Starta a distancia de cada vertice com infinito e predecessor nulo
+	for(i = 0; i < numGalaxies; i++){
+		vertices[i].dist = INT_MAX; // Seta todos os vertices com infinito
+		vertices[i]->pred = NULL;
 	}
-	dist[src] = 0; // Vertice inicial recebe 0
+	vertices[src].dist = 0; // Vertice inicial recebe 0
 
-
+	BellmanFord(vertices, matrix, numGalaxies, numWormholes,src);
 
 
 }
 
-void BellmanFord (Wormhole matrix[][numWormholes], int numGalaxies, int numWormholes, int src){
+void BellmanFord (Wormhole *list, int matrix[][numWormholes], int numGalaxies, int numWormholes, int src){
 	int i,j;
 
 	for(i=0; i<numGalaxies; i++){
 		for(j=0; j<numWormholes; j++){
-			printf("%5d ", matrix[i][j].cost);
+			printf("%5d ", matrix[i][j]);
 		}
 		printf("\n");
 	}
 	printf("\n");
+
+	//Acho que aqui deveria ser um for triplo
+	//Pra cada vertice - vertice(inicial) -> percorre cada aresta
+	for (i = 0; i < numGalaxies; i++) {
+		for (j = 0; j < numWormholes; j++) {
+			if (matrix[i][j] != 0)
+				relax(list[i], list[j], matrix[i][j]);
+		}
+	}
+
+	for (i = 0; i < numGalaxies; i++) {
+		for (i = 0; i < numWormholes; i++) {
+			if (matrix[i][j] != 0 && list[i].dist + matrix[i][j] < list[j].dist) {
+				//CICLO NEGATIVO - POSSIVEL
+			}
+		}
+	}
+
+	//IMPOSSIVEL
+}
+
+void relax(Wormhole u, Wormhole v, int w){
+	if (u.dist + w < v.dist) {
+		v.dist = u.dist + w;
+		v->pred = u;
+	}
+
 }
