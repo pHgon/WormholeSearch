@@ -7,8 +7,8 @@
 #include <limits.h>
 
 struct Node{
-	int cost; 
-	struct Node *pred; // Predecessor    
+	int cost;
+	struct Node *pred; // Predecessor
 }; typedef struct Node Wormhole;
 
 void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes);
@@ -30,7 +30,7 @@ void main (int argc,char *argv[]){
 	fscanf(inputFile, "%d\n", &sets);  // Le o numero de conjuntos que serao avaliados
 
 	for(i=0; i<sets; i++){  // Para todos os conjuntos
-		int galaxies, wormholes; 
+		int galaxies, wormholes;
 		fscanf(inputFile, "%d %d\n", &galaxies, &wormholes);  // Le o numero de galaxias e o numero de buracos de minhoca
 		wormholeSearch(inputFile, galaxies, wormholes);
 	}
@@ -44,7 +44,7 @@ void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes){
 	for(i=0; i<numGalaxies; i++){         //
 		for(j=0; j<numWormholes; j++){    //  NAO SEI AO CERTO SE ESTE TRECHO E NECESSARIO
 			matrix[i][j].cost = 0;        //  A MATRIZ JA INICIA ZERADA?
-		}                                 //  
+		}                                 //
 	}                                     //
 
 	for(i=0; i<numWormholes; i++){
@@ -62,19 +62,19 @@ void wormholeSearch (FILE *inputFile, int numGalaxies, int numWormholes){
 	}
 	dist[src] = 0; // Vertice inicial recebe 0
 
-	
 
-	
+
+
 }
 
-/*void BellmanFord (Wormhole *matrix, int numGalaxies, int numWormholes, int src){
+void BellmanFord (Wormhole matrix[][numWormholes], int numGalaxies, int numWormholes, int src){
 	int i,j;
 
-	for(i=0; i<numGalaxies; i++){         
-		for(j=0; j<numWormholes; j++){    
+	for(i=0; i<numGalaxies; i++){
+		for(j=0; j<numWormholes; j++){
 			printf("%5d ", matrix[i][j].cost);
-		} 
-		printf("\n");                                  
+		}
+		printf("\n");
 	}
 	printf("\n");
-}*/
+}
