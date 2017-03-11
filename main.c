@@ -92,15 +92,16 @@ int BellmanFord (Wormhole *list, int numGalaxies, int numWormholes, int matrix[]
 		}
 	}
 
+	//Encontra ciclo negativo
 	for (i = 0; i < numGalaxies; i++) {
-		for (i = 0; i < numWormholes; i++) {
+		for (j = 0; j < numWormholes; j++) {
 			if (matrix[i][j] != INT_MAX && list[i].distance + matrix[i][j] < list[j].distance) {
-				return 0;
+				return 1;
 			}
 		}
 	}
 
-	return 1;
+	return 0;
 }
 
 void relax(Wormhole *u, Wormhole *v, int w){
